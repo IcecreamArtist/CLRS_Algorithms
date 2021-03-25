@@ -124,9 +124,15 @@ for solution 3:
 
 We can find that this linear recurrence relation can be represented by matrix multiplication:
 
-$$
-\begin{matrix}
-0 & 1\\
-1 & 0
-\end{matrix} \qquad
-$$
+![img_8.png](img_8.png)
+
+(not good at representing matrix in latex so directly use a pic)
+
+Since we have a power calculation, we can use fast power to accelerate this process, whose idea is based on binary representation.
+
+This solution takes only $O(lg n)$ time, and $O(1)$ space to store the matrix.
+
+# Problem 1-2
+
+## code
+

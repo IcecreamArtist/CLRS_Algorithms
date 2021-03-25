@@ -4,4 +4,4 @@ project(unsolvedcode)
 set(CMAKE_CXX_STANDARD 14)
 
 #add_executable(unsolvedcode Data_Center.cpp)
-add_executable(unsolvedcode algo1-1.cpp)
+add_executable(unsolvedcode algo1-2.cpp)
