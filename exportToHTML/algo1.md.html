@@ -1,0 +1,145 @@
+<html>
+<head>
+<title>algo1.md</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #080808;}
+.s3 { color: #8c8c8c; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+algo1.md</font>
+</center></td></tr></table>
+<pre><span class="s0"># </span><span class="s2">Problem 1-1</span>
+
+<span class="s0">## </span><span class="s2">code</span>
+
+<span class="s3">```c++</span>
+<span class="s3">#include&lt;bits/stdc++.h&gt;</span>
+
+<span class="s3">using namespace std;</span>
+<span class="s3">typedef long long ll;</span>
+<span class="s3">const int mod = 1e9 + 7;</span>
+
+<span class="s3">// sol1: 普通递归，O(2^n)</span>
+<span class="s3">ll cal(int n) {</span>
+    <span class="s3">if (n == 1) return 1;</span>
+    <span class="s3">if (n == 2) return 2;</span>
+    <span class="s3">return cal(n - 1) + cal(n - 2);</span>
+<span class="s3">}</span>
+
+<span class="s3">// sol2: 递推，O(n)</span>
+<span class="s3">ll cal2(int n) {</span>
+    <span class="s3">if (n == 1) return 1;</span>
+    <span class="s3">ll ans[2];</span>
+    <span class="s3">ans[0] = 2, ans[1] = 1;</span>
+    <span class="s3">int t = 0;</span>
+    <span class="s3">for (int i = 3; i &lt;= n; ++i) {</span>
+        <span class="s3">ans[t ^ 1] = (ans[t] + ans[t ^ 1]) % mod;</span>
+        <span class="s3">t ^= 1;</span>
+    <span class="s3">}</span>
+    <span class="s3">return ans[t];</span>
+<span class="s3">}</span>
+
+<span class="s3">// sol3: 矩阵快速幂计算，O(lg n)</span>
+<span class="s3">/*</span>
+ <span class="s3">* [x_2, x_1]   [ 1 , 1  ]^(n-2)</span>
+ <span class="s3">* [ 0 ,  0 ]   [ 1 , 0  ]</span>
+ <span class="s3">*</span>
+ <span class="s3">*/</span>
+
+<span class="s3">struct Matrix {</span>
+    <span class="s3">ll m[2][2];</span>
+    <span class="s3">Matrix() {</span>
+        <span class="s3">memset(m, 0, sizeof(m));</span>
+    <span class="s3">}</span>
+<span class="s3">};</span>
+
+<span class="s3">// 矩阵乘法</span>
+<span class="s3">Matrix Multi(Matrix a, Matrix b) {</span>
+    <span class="s3">Matrix res;</span>
+    <span class="s3">for (int i = 0; i &lt; 2; ++i)</span>
+        <span class="s3">for (int j = 0; j &lt; 2; ++j)</span>
+            <span class="s3">for (int k = 0; k &lt; 2; ++k)</span>
+                <span class="s3">res.m[i][j] = (res.m[i][j] + a.m[i][k] * b.m[k][j]) % mod;</span>
+    <span class="s3">return res;</span>
+<span class="s3">}</span>
+
+<span class="s3">// 快速幂</span>
+<span class="s3">Matrix fastm(Matrix a, int n) {</span>
+    <span class="s3">Matrix res;</span>
+    <span class="s3">for (int i = 0; i &lt; 2; ++i) res.m[i][i] = 1;</span>
+    <span class="s3">while (n) {</span>
+        <span class="s3">if (n &amp; 1) res = Multi(res, a);</span>
+        <span class="s3">a = Multi(a, a);</span>
+        <span class="s3">n &gt;&gt;= 1;</span>
+    <span class="s3">}</span>
+    <span class="s3">return res;</span>
+<span class="s3">}</span>
+
+<span class="s3">int main() {</span>
+    <span class="s3">int n;</span>
+    <span class="s3">cin &gt;&gt; n;</span>
+   <span class="s3">// cout &lt;&lt; cal(n) &lt;&lt; endl;</span>
+   <span class="s3">// cout &lt;&lt; cal2(n) &lt;&lt; endl;</span>
+    <span class="s3">if (n == 1) {</span>
+        <span class="s3">cout &lt;&lt; 1 &lt;&lt; endl;</span>
+        <span class="s3">return 0;</span>
+    <span class="s3">}</span>
+    <span class="s3">if (n == 2) {</span>
+        <span class="s3">cout &lt;&lt; 2 &lt;&lt; endl;</span>
+        <span class="s3">return 0;</span>
+    <span class="s3">}</span>
+    <span class="s3">Matrix cur, pro;</span>
+    <span class="s3">cur.m[0][0] = 2, cur.m[0][1] = 1;</span>
+    <span class="s3">pro.m[0][0] = pro.m[0][1] = pro.m[1][0] = 1;</span>
+    <span class="s3">cout &lt;&lt; Multi(cur, fastm(pro, n - 2)).m[0][0] &lt;&lt; endl;</span>
+<span class="s3">}</span>
+
+<span class="s3">```</span>
+<span class="s0">## </span><span class="s2">Results</span>
+
+<span class="s1">![</span><span class="s2">img_1.png</span><span class="s1">](</span><span class="s2">img_1.png</span><span class="s1">)</span>
+
+<span class="s1">![</span><span class="s2">img_2.png</span><span class="s1">](</span><span class="s2">img_2.png</span><span class="s1">)</span>
+
+<span class="s1">![</span><span class="s2">img_3.png</span><span class="s1">](</span><span class="s2">img_3.png</span><span class="s1">)</span>
+
+<span class="s1">![</span><span class="s2">img_4.png</span><span class="s1">](</span><span class="s2">img_4.png</span><span class="s1">)</span>
+
+<span class="s1">![</span><span class="s2">img_5.png</span><span class="s1">](</span><span class="s2">img_5.png</span><span class="s1">)</span>
+
+<span class="s1">![</span><span class="s2">img_6.png</span><span class="s1">](</span><span class="s2">img_6.png</span><span class="s1">)</span>
+
+<span class="s1">![</span><span class="s2">img_7.png</span><span class="s1">](</span><span class="s2">img_7.png</span><span class="s1">)</span>
+
+<span class="s2">we can also input numbers that are larger than the size of integer since the time complexity is O</span><span class="s1">(</span><span class="s2">lg n</span><span class="s1">)</span><span class="s2">.</span>
+
+<span class="s0">## </span><span class="s2">Algorithm description</span>
+
+<span class="s2">for solution 1</span><span class="s1">:</span>
+
+<span class="s2">We use recursion to solve the problem. To climb to the $n$ th step, there are two situations, one is to take one step from the $n-1$ th step, and the second is to take two steps from the $n-2$ th step. Then the problem switches to climb the $n-1$ th and $n-2$ th step.</span>
+
+<span class="s2">$$f</span><span class="s1">(</span><span class="s2">x</span><span class="s1">) </span><span class="s2">= f</span><span class="s1">(</span><span class="s2">x-1</span><span class="s1">) </span><span class="s2">+ f</span><span class="s1">(</span><span class="s2">x-2</span><span class="s1">)</span><span class="s2">$$</span>
+
+<span class="s2">However, since this solution will divide a function into two function with only slightly small size, it will take $O</span><span class="s1">(</span><span class="s2">2^n</span><span class="s1">)</span><span class="s2">$ time to solve, which is really slow. </span><span class="s1">(</span><span class="s2">space complexity is also $O</span><span class="s1">(</span><span class="s2">2^n</span><span class="s1">)</span><span class="s2">, since we invoke that much functions$</span><span class="s1">)</span>
+
+<span class="s0">## </span><span class="s2">Other solutions</span>
+
+<span class="s2">for solution 2</span><span class="s1">:</span>
+
+<span class="s2">As stated above, this problem can be divided into two sub-problems, and the two have the parameters smaller than the original function's parameter for only 1. Moreover, the two sub-problems are crossed with each other. Therefore, we can write a linear for-loop and use only two space to store the intermediate values. For convenience, I use XOR operation to switch between the two space.</span>
+<span class="s2">The time complexity is $O</span><span class="s1">(</span><span class="s2">n</span><span class="s1">)</span><span class="s2">$, and space complexity is $O</span><span class="s1">(</span><span class="s2">1</span><span class="s1">)</span><span class="s2">$.</span>
+
+<span class="s2">for solution 3</span><span class="s1">:</span>
+
+<span class="s2">We can find that this linear recurrence relation can be represented by matrix multiplication</span><span class="s1">:</span>
+</pre>
+</body>
+</html>
