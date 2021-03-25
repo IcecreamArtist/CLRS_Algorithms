@@ -126,13 +126,13 @@ We can find that this linear recurrence relation can be represented by matrix mu
 
 \begin{equation}
 {
-\left[ \begin{array}{ccc}
+\left[ \begin{matrix}
 x_1 & x_0 \\
 0 & 0 
 \end{array}
 \right ]}
 \times{
-\left[ \begin{array}{ccc}
+\left[ \begin{matrix}
 1 & 1\\
 1 & 0 
 \end{array}
