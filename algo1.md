@@ -111,7 +111,7 @@ We use recursion to solve the problem. To climb to the $n$ th step, there are tw
 
 $$f(x) = f(x-1) + f(x-2)$$
 
-However, since this solution will divide a function into two function with only slightly small size, it will take $O(2^n)$ time to solve, which is really slow. (space complexity is also $O(2^n), since we invoke that much functions$)
+However, since this solution will divide a function into two function with only slightly small size, it will take $O(2^n)$ time to solve, which is really slow. (space complexity is also $O(2^n)$, since we invoke that much functions)
 
 ## Other solutions
 
@@ -123,3 +123,18 @@ The time complexity is $O(n)$, and space complexity is $O(1)$.
 for solution 3:
 
 We can find that this linear recurrence relation can be represented by matrix multiplication:
+
+\begin{equation}
+{
+\left[ \begin{array}{ccc}
+x_1 & x_0 \\
+0 & 0 
+\end{array}
+\right ]}
+\times{
+\left[ \begin{array}{ccc}
+1 & 1\\
+1 & 0 
+\end{array}
+\right ]}
+\end{equation}
