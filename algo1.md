@@ -124,17 +124,9 @@ for solution 3:
 
 We can find that this linear recurrence relation can be represented by matrix multiplication:
 
-\begin{equation}
-{
-\left[ \begin{matrix}
-x_1 & x_0 \\
-0 & 0 
-\end{array}
-\right ]}
-\times{
-\left[ \begin{matrix}
-1 & 1\\
-1 & 0 
-\end{array}
-\right ]}
-\end{equation}
+$$
+\begin{matrix}
+0 & 1\\
+1 & 0
+\end{matrix} \qquad
+$$
