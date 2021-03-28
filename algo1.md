@@ -289,7 +289,7 @@ $$T(n,m) = T(\frac{n}{4},\frac{m}{4}) + O(m+n)$$
 this is equivalent to
 $$T(n) = T(\frac{n}{2}) + O(n)$$
 which by master's theorem, is $O(n)$.
-
+![img_11.png](img_11.png)
 ## Other solutions
 
 As stated in the ppt slice, we can also do it using $O(nlogm)$(find a global maximum in each column and reduce the matrix into two sub-matrix).
