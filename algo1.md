@@ -136,3 +136,163 @@ This solution takes only $O(lg n)$ time, and $O(1)$ space to store the matrix.
 
 ## code
 
+```c++
+//
+// Created by Artist on 2021/3/25.
+//
+#include<bits/stdc++.h>
+
+using namespace std;
+
+
+const int maxn = 1e3 + 3;
+int a[maxn][maxn];
+
+pair<int, int> solve(int sx, int sy, int tx, int ty) {
+    int mx = (sx + tx) >> 1, my = (sy + ty) >> 1;// 中间十字
+    int maxx = 0; // 中间十字最大值
+    int posx, posy; // 中间十字最大值的位置
+    for (int i = sx; i <= tx; ++i) if (a[i][my] > maxx) maxx = a[i][my], posx = i, posy = my;
+    for (int j = sy; j <= ty; ++j) if (a[mx][j] > maxx) maxx = a[mx][j], posx = mx, posy = j;
+    if (posx == mx && posy == my) return make_pair(posx, posy);
+    if (posx == mx) { // 如果在中间行上
+        if ((posx == sx || a[posx - 1][posy] <= a[posx][posy]) &&
+            (posx == tx || a[posx + 1][posy] <= a[posx][posy]))
+            return make_pair(posx, posy); // 如果大于上下两格
+        if (posx != sx && a[posx - 1][posy] > a[posx][posy]) {
+            if (posy <= my) return solve(sx, sy, mx - 1, my - 1);
+            else return solve(sx, my + 1, mx - 1, ty); // 递归
+        } else {
+            if (posy <= my) return solve(mx + 1, sy, tx, my - 1);
+            else return solve(mx + 1, my + 1, tx, ty);
+        }
+    } else { // 如果在中间列上
+        if ((posy == sy || a[posx][posy - 1] <= a[posx][posy]) &&
+            (posy == ty || a[posx][posy + 1] <= a[posx][posy]))
+            return make_pair(posx, posy); // 如果大于左右两格
+        if (posy != sy && a[posx][posy - 1] > a[posx][posy]) {
+            if (posx <= mx) return solve(sx, sy, mx - 1, my - 1);
+            else return solve(mx + 1, sy, tx, my - 1);
+        } else {
+            if (posx <= mx) return solve(sx, my + 1, mx - 1, ty);
+            else return solve(mx + 1, my + 1, tx, ty);
+        }
+    }
+}
+
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    //cout << n << " " << m << endl;
+    for (int i = 1; i <= n; ++i) for (int j = 1; j <= m; ++j) scanf("%d", &a[i][j]);
+    //for (int i = 1; i <= n; ++i, cout << endl) for (int j = 1; j <= m; ++j) cout << a[i][j] << " ";
+
+    pair<int, int> res = solve(1, 1, n, m);
+    cout << res.first << " " << res.second << endl;
+}
+
+int main() {
+    int t;
+    cin >> t;
+    //cout << t << endl;
+    while (t--) solve();
+}
+```
+## Results
+
+```c++
+//
+// generate test data
+//
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int mp[1002][1002];
+
+int main() {
+    int t = 30;
+    cout << t << endl;
+    while (t--) {
+        int n = ((int) rand()) % 988 + 5;
+        int m = ((int) rand()) % 988 + 5;
+        cout << n << " " << m << endl;
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m; ++j) {
+                mp[i][j] = ((int) rand()) % 988 + 5;
+                cout << mp[i][j] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+}
+```
+```c++
+//
+// O(n^2) evaluate the results produced by solution code
+//
+
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int mp[1003][1003];
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, m;
+        cin >> n >> m;
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m; ++j) {
+                scanf("%d", &mp[i][j]);
+            }
+        }
+        int x, y;
+        cin >> x >> y;
+        int flg = 0;
+        if (x > 1 && mp[x][y] < mp[x - 1][y]) flg = 1;
+        if (y > 1 && mp[x][y] < mp[x][y - 1]) flg = 1;
+        if (x < n && mp[x][y] < mp[x + 1][y]) flg = 1;
+        if (y < m && mp[x][y] < mp[x][y + 1]) flg = 1;
+        if (flg) cout << "wrong" << endl;
+        else cout << "correct" << endl;
+    }
+
+}
+```
+![img_9.png](img_9.png)
+![img_10.png](img_10.png)
+
+## Algorithm description
+
+Teacher's slide thinks that the method of finding one-dimensional peaks cannot be applied to finding two-dimensional peaks. I disagree with this point. My algorithm is to generalize the one-dimensional peak algorithm to use it to solve the two-dimensional peaks problem.
+
+The following is a brief description of the algorithm:
+
+We divide the current matrix into 4 equal-sized matrices with the middle as the axis. Take the boundary of 4 small matrices, that is, a cross. We find the position of the largest value among this cross. If this value is greater than or equal to the value near it and outside the cross, we say that this position is the answer. If it is not true, then we can prove that there must be a peak in the small matrix to which the value near him is larger than him. So we can solve this recursively.
+
+We first prove why, when there is a larger value $A$ around the maximum in the cross, there must be a peak in the smaller matrix where $A$ is located.
+
+I got inspiration from the one-dimensional algorithm. In the one-dimensional algorithm, divide and conquer is established because there is a condition, that is, if $a[mid-1]>a[mid]$, then we can say that there is a peak among $a[1]$~$a[mid-1]$. So we can divide the problem into half. The premise of this condition is that $a[mid]$ separates $a[1]~a[mid-1]$ from $a[mid+1]~a[n]$. Therefore, the sub-problem $a[1]~a[mid-1]$ has become an independent new problem, and the result is not affected by the right side. Originally, $a[mid-1]$ would be affected by $a[mid]$, that is, if the peak value of the sub-problems $a[1]~a[mid-1]$ is the boundary $a[mid-1]$, then $a[mid-1] <a[mid]$ so the solution to the sub-problem is not the solution to the original problem. But by judging the relationship between $a[mid]$ and $a[mid-1]$ in advance, we ensure that $a[mid]<a[mid-1]$, that is, $a[mid-1]$ will not be affected. Therefore, one-dimensional divide and conquer is established.
+
+Then we select the middle cross for the two-dimensional plane and find the position of the maximum value on the cross. Obviously, the value of this position must be greater than or equal to the other values on the cross. If this position is on the horizontal axis of the cross, the top and bottom are two values that are not inside the cross. If it is on the vertical axis, its left and right are two values that are not inside the cross. Compare it with these two values. If it is greater than or equal to these two values, we say that this position is the answer. why? Because it is already the maximum value on the cross, and now it is greater than the two adjacent values outside the cross. So it must be the peak. What if one or two of these two values are greater than it? We can prove that there is a peak in the 1/4 sub-matrix where the larger value is located.
+
+The proof of this view is similar to the one-dimensional one. Finding the cross is equivalent to separating the four matrices and turning them into independent problems. The solution of each small matrix with a value greater than the maximum value on the cross is the solution of the large matrix and will not be affected by the number on the cross. Proof: For a sub-matrix, if its solution is inside, it must also be the solution of the larger matrix. If the solution is on the boundary of the cross, in particular, we say that the solution is the value greater than the maximum value of the cross. If it is larger than either side of it, it is the peak. If there is something larger than it on either sides of it, then the value larger than it is definitely greater than the value on the cross. So the influence of the cross is eliminated.
+
+In the end, we prove the time complexity of this algorithm.
+
+$$T(n,m) = T(\frac{n}{4},\frac{m}{4}) + O(m+n)$$
+this is equivalent to
+$$T(n) = T(\frac{n}{2}) + O(n)$$
+which by master's theorem, is $O(n)$.
+
+## Other solutions
+
+As stated in the ppt slice, we can also do it using $O(nlogm)$(find a global maximum in each column and reduce the matrix into two sub-matrix).
+
+But I think the best way to solve this problem is using $O(nm)$. Because the time complexity of input is already $O(nm)$, there is no need to seek for a quicker algorithm.
+
