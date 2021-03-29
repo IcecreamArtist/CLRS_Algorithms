@@ -160,6 +160,7 @@ Therefore, the formula is $f_n = \frac{1+\sqrt{5}}{2\sqrt{5}}\times {(\frac{1+\s
 
 We use fast power to accelerate this procedure. It needs $O(lg n)$time.
 But there might be precision problem since we are using float point. Actually we can use Quadratic residue(number theory) to use module to avoid this problem..
+
 for solution 4:
 
 We can find that this linear recurrence relation can be represented by matrix multiplication:
