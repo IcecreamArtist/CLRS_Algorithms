@@ -151,8 +151,8 @@ The formula is in the form: $c_1{x_1}^n + c_2{x_2}^n$.
 
 put $f_1 = 1, f_2 = 2$ into the formula, we can get:
 
-$$c_1\times \frac{1+\sqrt{5}}{2}+c_2\times {1-\sqrt{5}}{2} = 1$$
-$$c_1\times {(\frac{1+\sqrt{5}}{2})}^2+c_2\times {({1-\sqrt{5}}{2})}^2 = 2$$
+$$c_1\times \frac{1+\sqrt{5}}{2}+c_2\times \frac{1-\sqrt{5}}{2} = 1$$
+$$c_1\times {(\frac{1+\sqrt{5}}{2})}^2+c_2\times {(\frac{1-\sqrt{5}}{2})}^2 = 2$$
 
 We get $c_1 = \frac{1+\sqrt{5}}{2\sqrt{5}},c_2 = \frac{\sqrt{5}-3}{\sqrt{5}-5}$.
 
@@ -313,7 +313,7 @@ Teacher's slide thinks that the method of finding one-dimensional peaks cannot b
 
 The following is a brief description of the algorithm:
 
-We divide the current matrix into 4 equal-sized matrices with the middle as the axis. Take the boundary of 4 small matrices, that is, a cross. We find the position of the largest value among this cross. If this value is greater than or equal to the value near it and outside the cross, we say that this position is the answer. If it is not true, then we can prove that there must be a peak in the small matrix to which the value near him is larger than him. So we can solve this recursively.
+We divide the current matrix into 4 equal-sized matrices with the middle as the axis. Take the boundary of 4 small matrices, that is, a cross. We find the position of the largest value among this cross. If this value is greater than or equal to the value near it and outside the cross, we say that this position is the answer. If it is not true, then we can prove that there must be a peak in the small matrix to which the value near it is larger than it. So we can solve this recursively.
 
 We first prove why, when there is a larger value $A$ around the maximum in the cross, there must be a peak in the smaller matrix where $A$ is located.
 
@@ -328,7 +328,7 @@ In the end, we prove the time complexity of this algorithm.
 $$T(n,m) = T(\frac{n}{4},\frac{m}{4}) + O(m+n)$$
 this is equivalent to
 $$T(n) = T(\frac{n}{2}) + O(n)$$
-which by master's theorem, is $O(n)$.
+which by master's theorem, is $O(n+m)$.
 ![img_11.png](img_11.png)
 ## Other solutions
 
