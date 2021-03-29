@@ -9,14 +9,14 @@ using namespace std;
 typedef long long ll;
 const int mod = 1e9 + 7;
 
-// sol1: 普通递归，O(2^n)
+// sol1: 普通递归O(2^n)
 ll cal(int n) {
     if (n == 1) return 1;
     if (n == 2) return 2;
     return cal(n - 1) + cal(n - 2);
 }
 
-// sol2: 递推，O(n)
+// sol2: 递推O(n)
 ll cal2(int n) {
     if (n == 1) return 1;
     ll ans[2];
@@ -29,7 +29,24 @@ ll cal2(int n) {
     return ans[t];
 }
 
-// sol3: 矩阵快速幂计算，O(lg n)
+// sol3: 公式+快速幂O(lg n)
+double fastm(double a,int n){
+    double ans = 1.0;
+    while(n){
+        if(n&1) ans = a*ans;
+        a=a*a;
+        n>>=1;
+    }
+    return ans;
+}
+
+// 公式
+ll cal3(int n){
+    double root5 = sqrt(5);
+    return (ll)((1+root5)/(2*root5)*fastm((1+root5)/2,n)+(3-root5)/(5-root5)*fastm((1-root5)/2,n));
+}
+
+// sol4: 矩阵快速幂计算O(lg n)
 /*
  * [x_2, x_1]   [ 1 , 1  ]^(n-2)
  * [ 0 ,  0 ]   [ 1 , 0  ]
@@ -38,12 +55,12 @@ ll cal2(int n) {
 
 struct Matrix {
     ll m[2][2];
+
     Matrix() {
         memset(m, 0, sizeof(m));
     }
 };
 
-// 矩阵乘法
 Matrix Multi(Matrix a, Matrix b) {
     Matrix res;
     for (int i = 0; i < 2; ++i)
@@ -53,7 +70,6 @@ Matrix Multi(Matrix a, Matrix b) {
     return res;
 }
 
-// 快速幂
 Matrix fastm(Matrix a, int n) {
     Matrix res;
     for (int i = 0; i < 2; ++i) res.m[i][i] = 1;
@@ -78,10 +94,14 @@ int main() {
         cout << 2 << endl;
         return 0;
     }
+    cout << cal3(n) << endl; // 可换成cal1,cal2,或下面注释
+    /*
     Matrix cur, pro;
     cur.m[0][0] = 2, cur.m[0][1] = 1;
     pro.m[0][0] = pro.m[0][1] = pro.m[1][0] = 1;
     cout << Multi(cur, fastm(pro, n - 2)).m[0][0] << endl;
+     */
+
 }
 
 ```
@@ -121,6 +141,26 @@ As stated above, this problem can be divided into two sub-problems, and the two 
 The time complexity is $O(n)$, and space complexity is $O(1)$.
 
 for solution 3:
+
+We can directly derive the formula for this linear recurrence relation.
+The auxiliary equation for this recurrence relation is:
+$$x^{n+2} = x^{n+1} + x^n$$
+We get the two roots: $x_1 = \frac{1+\sqrt{5}}{2}, x_2 = \frac{1-\sqrt{5}}{2}$.
+
+The formula is in the form: $c_1{x_1}^n + c_2{x_2}^n$.
+
+put $f_1 = 1, f_2 = 2$ into the formula, we can get:
+
+$$c_1\times \frac{1+\sqrt{5}}{2}+c_2\times {1-\sqrt{5}}{2} = 1$$
+$$c_1\times {(\frac{1+\sqrt{5}}{2})}^2+c_2\times {({1-\sqrt{5}}{2})}^2 = 2$$
+
+We get $c_1 = \frac{1+\sqrt{5}}{2\sqrt{5}},c_2 = \frac{\sqrt{5}-3}{\sqrt{5}-5}$.
+
+Therefore, the formula is $f_n = \frac{1+\sqrt{5}}{2\sqrt{5}}\times {(\frac{1+\sqrt{5}}{2})}^n + \frac{\sqrt{5}-3}{\sqrt{5}-5}\times {(\frac{1-\sqrt{5}}{2})}^n$.
+
+We use fast power to accelerate this procedure. It needs $O(lg n)$time.
+But there might be precision problem since we are using float point. Actually we can use Quadratic residue(number theory) to use module to avoid this problem..
+for solution 4:
 
 We can find that this linear recurrence relation can be represented by matrix multiplication:
 

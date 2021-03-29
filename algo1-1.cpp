@@ -23,6 +23,22 @@ ll cal2(int n) {
     return ans[t];
 }
 
+double fastm(double a,int n){
+    double ans = 1.0;
+    while(n){
+        if(n&1) ans = a*ans;
+        a=a*a;
+        n>>=1;
+    }
+    return ans;
+}
+
+// 公式计算
+ll cal3(int n){
+    double root5 = sqrt(5);
+    return (ll)((1+root5)/(2*root5)*fastm((1+root5)/2,n)+(3-root5)/(5-root5)*fastm((1-root5)/2,n));
+}
+
 // 矩阵快速幂计算
 /*
  * [x_2, x_1]   [ 1 , 1  ]^(n-2)
@@ -71,8 +87,12 @@ int main() {
         cout << 2 << endl;
         return 0;
     }
+    cout<<cal3(n)<<endl;
+    /*
     Matrix cur, pro;
     cur.m[0][0] = 2, cur.m[0][1] = 1;
     pro.m[0][0] = pro.m[0][1] = pro.m[1][0] = 1;
     cout << Multi(cur, fastm(pro, n - 2)).m[0][0] << endl;
+     */
+
 }
