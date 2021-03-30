@@ -4,11 +4,11 @@
 ![img_12.png](img_12.png)
 
 The I/O device is idle initially. When there is a I/O request,
-the I/O device begins to transfer the interrupt to CPU. 
-After the transfer is done, it requires some time for the CPU to be
-interrupted. The CPU stops user process executing and immediately
+the I/O device begins to transfer the interrupt to CPU by the way of the 
+system bus. After the transfer is done, it requires some time for the CPU to process
+the interrupt. The CPU stops user process executing and immediately
 transfers execution to a fixed location, in the timeline, that is
-I/O interrput processing. The fixed location usually contains the
+I/O interrupt processing. The fixed location usually contains the
 starting address where the service routine for the interrupt is located.
 The interrupt service routine executes; on completion, the CPU resumes
 the interrupted computation and comes back to user process executing.
