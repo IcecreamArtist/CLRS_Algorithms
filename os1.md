@@ -37,7 +37,8 @@ so that the other processes are hang for a long time, which decreases
 the efficiency, the CPU execution must be interrupted after part
 of the execution is done.
 Therefore, this process changes states from running back to ready to
- let the other processes have changes to be executed.
+ let the other processes have chances to be executed. The process is now in
+ the list of processes again.
 
 ![img_15.png](img_15.png)
 (1)
@@ -74,8 +75,8 @@ register2 = register2 - 1;
 counter = register2;
 ```
 
-after this order of execution, we can see "counter" first increase by 1,
-and then decrease by 1. At last, it stays the same as before.
+after this order of execution, we can see "counter" first increases by 1,
+and then decreases by 1. At last, it stays the same as before.
 
 (1.2) counter == 6
 
@@ -119,7 +120,7 @@ counter = register1; // 8
 
 This is similar to the problem in the last case when final 
 value of "counter" == 6. The original counter assigns its value
- to different registers sequentially, without being assigned by
+ to different registers sequentially, before being assigned by
  any one of them.
 
 (2)
@@ -213,7 +214,7 @@ do{
 } while(true);
 ```
 
-The initial value of "rmutex", "totmutex"" and "lmutex" is 1.
+The initial values of "rmutex", "totmutex"" and "lmutex" are 1.
 
 The basic idea of this solution is that: we define a mutex for the
  availability of the single-plank bridge. When someone is crossing
@@ -221,11 +222,14 @@ The basic idea of this solution is that: we define a mutex for the
  pass. So the first person to enter the bridge will lock the bridge.
  If the second person is from the same direction, it needs not to 
 wait for the lock of the bridge and can cross it directly. When the
- third person is from the different direction, it is the first person
- of the different direction, of course. It will needs to wait for
+ third person is from the different direction, it is also the first person
+ of the different direction, of course. It will need to wait for
  the bridge to unlock and stuck. If the fourth person is also from
- the second direction, it even cannot enter the counter section because
- the third person has lock it. Therefore, pedestrians from the other
+ the second direction, it even cannot enter the count section because
+ the third person has lock it and it hasn't get out from it. Therefore, pedestrians from the other
  direction cannot cross while ones from the same direction can. This 
 situation continues until the pedestrians from the first direction
  have finished crossing. 
+
+It is obvious that the three conditions: mutual-exclusion,
+ progress and bounded waiting can be preserved.
