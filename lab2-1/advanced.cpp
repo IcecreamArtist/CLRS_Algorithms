@@ -11,36 +11,42 @@ int x, y;  // initial position
 int maxx, maxy;
 // maximum row, maximum column
 
-void print(int i, int j, char ch) {
-    // note that the ascii '\' and '/' have different size
-    // therefore, '_' may need to be overwritten.
-    if (mp[i][j] == ' ' || mp[i][j] == '_')
-        mp[i][j] = ch;
-}
+#define print(i, j, ch) ((mp[i][(j)]!='_'&&mp[i][j]!=' ')?:mp[i][j]=ch)
+
 
 void solve(int n, int di) {
     // number and direction
     if (n == 0) {
         switch (di) {
             case 0:
-                print(x, y++, '_');
-                print(x, y++, '_');
+                print(x, y, '_');
+                ++y;
+                print(x, y, '_');
+                ++y;
                 break;
             case 1:
-                print(++x, y++, '\\');
+                ++x;
+                print(x, y, '\\');
+                ++y;
                 break;
             case 2:
-                print(++x, --y, '/');
+                ++x, --y;
+                print(x, y, '/');
                 break;
             case 3:
-                print(x, --y, '_');  // this or the next '_' will be overwritten
-                print(x, --y, '_');
+                --y;
+                print(x, y, '_');  // this or the next '_' will be overwritten
+                --y;
+                print(x, y, '_');
                 break;
             case 4:
-                print(x--, --y, '\\');
+                --y;
+                print(x, y, '\\');
+                --x;
                 break;
             case 5:
-                print(x--, y++, '/');
+                print(x, y, '/');
+                --x, ++y;
                 break;
         }
         maxx = max(maxx, x);
