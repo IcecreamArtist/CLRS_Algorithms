@@ -161,16 +161,16 @@ Therefore, we consider processing the $dp$ array and maintain an array with $i$ 
 Because the calculation of `left` and `right` requires a `dp` value of one smaller level interval; and the calculation of the `dp` value of the current level requires preprocessed `left` and `right`. We interspersed the updates of these three arrays at the same time.
 Therefore, we have:
 
-$$lef\[i\]\[j\] = max\{lef\[i\]\[j - 1\], \sum_{a=i}^j stone\[a\] + dp\[i\]\[j\])$$
-$$rig\[i\]\[j\] = max\{rig\[i + 1\]\[j\], \sum_{a=i}^j stone\[a\] + dp\[i\]\[j\])$$
-$$dp\[i\]\[j\] = max\{dp\[i\]\[j\], lef\[i\]\[mid\])$$
-$$dp\[i\]\[j\] = max\{dp\[i\]\[j\], rig\[mid + 2\]\[j\])$$
+$$lef[i][j] = max\{lef[i][j - 1], \sum_{a=i}^j stone[a] + dp[i][j]\}$$
+$$rig[i][j] = max\{rig[i + 1][j], \sum_{a=i}^j stone[a] + dp[i][j]\}$$
+$$dp[i][j] = max\{dp[i][j], lef[i][mid]\}$$
+$$dp[i][j] = max\{dp[i][j], rig[mid + 2][j]\}$$
 
 Where $mid$ represents the intermediate position that change the decision, which is processed in advance according to its linearity.
 
 - Recover the optimal solution 
 
-The optimal solution is $dp\[1\]\[n\]$.
+The optimal solution is $dp[1][n]$.
 If we want to recover the detail of the optimal solution, we can add a traceability array to record in which decision we obtain a better result.
 After printing the array, we can obtain the detail of the optimal solution.
 
