@@ -391,6 +391,6 @@ Now let's briefly introduce the binary index tree. Binary index tree is a derive
 
 Note that this problem requires that the first attribute is also strictly less. Therefore, if we put two elements with the same width directly into the adjacent but increasing timeline, the relationship between them will be destroyed. So consider dividing the element segment into different levels by width. After updating the elements of equal width, consider putting them into the BIT to update the answer of the element with larger width.
 
-Using a queue to temporarily store elements of one dimension has an amortized O(n) complexity.
+Using a queue to temporarily store elements of one dimension has an amortized $O(n)$ complexity.
 
 The total complexity is $O(n lg n)$.
