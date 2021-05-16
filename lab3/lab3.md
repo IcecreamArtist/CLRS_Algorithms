@@ -149,8 +149,8 @@ $i$ and $j$ respectively represent the start and end points of the interval. $dp
 From the description of the problem, the answer to an interval can be derived from some left half or some right half of it. Therefore, the most natural idea is to enumerate the turning points in each interval. Then update the interval from the left and right intervals divided by the transit point.
 Therefore, we can first write a n^3 solution. That is, enumerate the intervals from the bottom up, and the large intervals are updated from the enumerated smaller ones.
 That is,
-$$dp\[i]\[j]=max{dp\[i]\[j],dp\[i]\[k]+\sum_{a=l}^k stone\[a]},\sum_{a=l}^k stone\[a]<\sum_{a=k+1}^r stone\[a]$$
-$$dp\[i]\[j]=max{dp\[i]\[j],dp\[k]\[j]+\sum_{a=k}^j stone\[a]},\sum_{a=l}^k stone\[a]>\sum_{a=k+1}^r stone\[a]$$
+$$dp[i][j]=max\{dp[i][j],dp[i][k]+\sum_{a=l}^k stone\[a]\},\sum_{a=l}^k stone\[a]<\sum_{a=k+1}^r stone\[a]$$
+$$dp[i][j]=max\{dp[i][j],dp[k][j]+\sum_{a=k}^j stone\[a]\},\sum_{a=l}^k stone\[a]>\sum_{a=k+1}^r stone\[a]$$
 
 Note that for an interval, a conditional judgment is required so that the intermediate position of the decision change is uniquely determined. Therefore, we consider whether the intermediate position can be preprocessed.
 At the same time, observing the cycle, we found that when the middle position of the decision change and the answer between the cells are known, the third cycle of the current interval, that is, the process of enumerating the demarcation points is actually a monotonous process.
