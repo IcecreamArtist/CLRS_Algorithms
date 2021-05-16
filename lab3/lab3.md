@@ -149,8 +149,8 @@ $i$ and $j$ respectively represent the start and end points of the interval. $dp
 From the description of the problem, the answer to an interval can be derived from some left half or some right half of it. Therefore, the most natural idea is to enumerate the turning points in each interval. Then update the interval from the left and right intervals divided by the transit point.
 Therefore, we can first write a n^3 solution. That is, enumerate the intervals from the bottom up, and the large intervals are updated from the enumerated smaller ones.
 That is,
-$$dp[i][j]=max\{dp[i][j],dp[i][k]+\sum_{a=l}^k stone\[a]\},\sum_{a=l}^k stone\[a]<\sum_{a=k+1}^r stone\[a]$$
-$$dp[i][j]=max\{dp[i][j],dp[k][j]+\sum_{a=k}^j stone\[a]\},\sum_{a=l}^k stone\[a]>\sum_{a=k+1}^r stone\[a]$$
+$$dp[i][j]=max(dp[i][j],dp[i][k]+\sum_{a=l}^k stone\[a]),\sum_{a=l}^k stone\[a]<\sum_{a=k+1}^r stone\[a]$$
+$$dp[i][j]=max(dp[i][j],dp[k][j]+\sum_{a=k}^j stone\[a]),\sum_{a=l}^k stone\[a]>\sum_{a=k+1}^r stone\[a]$$
 
 Note that for an interval, a conditional judgment is required so that the intermediate position of the decision change is uniquely determined. Therefore, we consider whether the intermediate position can be preprocessed.
 At the same time, observing the cycle, we found that when the middle position of the decision change and the answer between the cells are known, the third cycle of the current interval, that is, the process of enumerating the demarcation points is actually a monotonous process.
@@ -161,10 +161,10 @@ Therefore, we consider processing the $dp$ array and maintain an array with $i$ 
 Because the calculation of `left` and `right` requires a `dp` value of one smaller level interval; and the calculation of the `dp` value of the current level requires preprocessed `left` and `right`. We interspersed the updates of these three arrays at the same time.
 Therefore, we have:
 
-$$lef[i][j] = max\{lef[i][j - 1], \sum_{a=i}^j stone[a] + dp[i][j]\}$$
-$$rig[i][j] = max\{rig[i + 1][j], \sum_{a=i}^j stone[a] + dp[i][j]\}$$
-$$dp[i][j] = max\{dp[i][j], lef[i][mid]\}$$
-$$dp[i][j] = max\{dp[i][j], rig[mid + 2][j]\}$$
+$$lef[i][j] = max(lef[i][j - 1], \sum_{a=i}^j stone[a] + dp[i][j])$$
+$$rig[i][j] = max(rig[i + 1][j], \sum_{a=i}^j stone[a] + dp[i][j])$$
+$$dp[i][j] = max(dp[i][j], lef[i][mid])$$
+$$dp[i][j] = max(dp[i][j], rig[mid + 2][j])$$
 
 Where $mid$ represents the intermediate position that change the decision, which is processed in advance according to its linearity.
 
@@ -359,7 +359,7 @@ Therefore, the sub-problem is obvious. To get the length of the longest sequence
 
 Sort the envelopes by width, and treat the width as a subscript. Then traverse the array from left to right, and for each position, find the dp value of the previous position whose value is less than its position, and update it.
 That is:
-$$dp[i] = max\{dp[j]+1\},j<i and a[j]<a[i]$$
+$$dp[i] = max(dp[j]+1),j<i and a[j]<a[i]$$
 
 In the medium solution, we consider optimizing this dynamic programming. Consider a greedy strategy, which is to maintain a queue. Replace the current element with the element in the queue whose height is just greater than it. The length of the final queue is the answer. The basic idea is that the longest increasing sub-sequence must be the last bit as small as possible, so that more numbers can be connected in the future. For the currently considered subscript, the subscripts of all elements in the queue must be smaller than the current subscript. For future subscripts, the current subscript must be smaller. Therefore, only the contribution to the future is considered, and the width of the current element can be ignored. The purpose of this queue is to maintain multiple feasible solutions at the same time, and use greedy thinking to maximize future results.
 At the same time, the queue elements are monotonic, and we can use binary search to quickly find replaceable positions.
