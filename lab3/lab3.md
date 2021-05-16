@@ -359,7 +359,7 @@ Therefore, the sub-problem is obvious. To get the length of the longest sequence
 
 Sort the envelopes by width, and treat the width as a subscript. Then traverse the array from left to right, and for each position, find the dp value of the previous position whose value is less than its position, and update it.
 That is:
-$$dp[i] = max(dp[j]+1),j<i and a[j]<a[i]$$
+$$dp[i] = max(dp[j]+1), j<i and a[j]<a[i]$$
 
 In the medium solution, we consider optimizing this dynamic programming. Consider a greedy strategy, which is to maintain a queue. Replace the current element with the element in the queue whose height is just greater than it. The length of the final queue is the answer. The basic idea is that the longest increasing sub-sequence must be the last bit as small as possible, so that more numbers can be connected in the future. For the currently considered subscript, the subscripts of all elements in the queue must be smaller than the current subscript. For future subscripts, the current subscript must be smaller. Therefore, only the contribution to the future is considered, and the width of the current element can be ignored. The purpose of this queue is to maintain multiple feasible solutions at the same time, and use greedy thinking to maximize future results.
 At the same time, the queue elements are monotonic, and we can use binary search to quickly find replaceable positions.
