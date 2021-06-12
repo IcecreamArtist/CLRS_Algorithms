@@ -80,22 +80,31 @@ int main() {
 ![img.png](img.png)
 
 The first number is the number of test cases.
+
 For each test case, there are two lines. The first line consists of one number $n$, representing the number of positions.
+
 The second line consists of $n$ elements, the $i$th number represents the number of positions that are reachable from the current position.
 
 ## Algorithm description
 
 It is natural to think of dynamic programming.
+
 Status: $dp[i]$ represents the minimum number of steps to position $i$. Initialize to positive infinity.
+
 State transition: for $j$ in range$(1,a[i])$ $dp[i+j] = min(dp[i+j],dp[i]+1)$.
+
 That is, the answer is updated from front to back.
+
 base case: $dp[0]=0$. That is, the initial position.
+
 Answer: $dp[n-1]$. That is, the cost to the final position.
+
 Time complexity: $O(n^2)$. Since we need to iterate the whole array, and for each position, update its reachable positions' dp value.
 
 The greedy approach is based on the following principle: every time you jump, it is optimal to jump to the position of "you can jump to the farthest position from here".
 It is not difficult to prove that for the same jump cost, if one jump can get to a position that can reach farther position, it is more likely to reach the destination with the least number of jumping times.
 So every time it finds the position that can jump to the farthest position among all the positions that can be reached by the current position.
+
 Time complexity: $O(n^2)$. Since we need to find the optimal position among reachable positions.
 
 
@@ -257,34 +266,52 @@ int main() {
 
 ## Result
 
-solution 1 (greedy)
 - test case 1
 
+
+![img_9.png](img_9.png)
+
+
+solution 1:
+
 ![img_1.png](img_1.png)
+
+solution 2:
+
+![img_4.png](img_4.png)
   
 - test case 2
 
+![img_10.png](img_10.png)
+
+solution 1:
+
 ![img_2.png](img_2.png)
 
-- test case 3
-
-![img_3.png](img_3.png)
-
-solution 2 (linear programming)
-
-- test case 1
-
-![img_4.png](img_4.png)
-
-- test case 2
+solution 2:
 
 ![img_5.png](img_5.png)
 
 - test case 3
 
+![img_11.png](img_11.png)
+
+solution 1:
+
+![img_3.png](img_3.png)
+
+solution 2:
+
 ![img_6.png](img_6.png)
 
 comment:
+
+The second algorithm gives a bad result.
+If the answer is in fractional form, we can see 
+the $x$ variable of all vertices are $0.5$ at the same
+ time. However, the fractional answer is the optimal 
+answer. Therefore, this time we get the worst case in
+ the LP approach.
 
 ![img_7.png](img_7.png)
 
@@ -292,17 +319,19 @@ comment:
 
 The idea of the greedy algorithm is to find the point with the largest degree in the 
 current remaining graph every time, and add this point to the answer. Then delete all edges adjacent to the point.
-approximation factor: 2.
-proof can be found in the teaching ppt slide.
+approximation factor: $2$.
 
-The idea of Linear Programming is: observe the original problem and find that it is essentially a 01 integer programming problem.
+Proof can be found in the teaching ppt slide.
+
+The idea of Linear Programming is: observe the primal problem and find that it is essentially a 01 integer programming problem.
 The 01 integer programming problem is also an NP-hard problem. However, we can turn the original problem into fractional
 linear programming problems to approximate the answer.
-First consider converting the original question into a fractional version (this process is LP-relaxation
-). For each vertex, there is a variable $x_i$,
-$xi$ has a limitation of 0\leq x_i\leq 1. 
+
+First consider converting the primal problem into a fractional version (this process is LP-relaxation).
+For each vertex, there is a variable $x_i$,
+$x_i$ has a limitation of $0\leq x_i\leq 1$. 
 Consider that $x_i=1$ means selecting the vertex, while $x_i=0$ means not selecting.
-When $xi$ is between $0$ and $1$, we consider that we "partially select" the vertex.
+When $x_i$ is in-between, we consider that we "partially select" this vertex.
 For each edge $(i, j)$, at least one of its two endpoints needs to be covered. We get
 new restriction conditions $x_i+x_j\geq 1$. Our objective function is to minimize $\sum x_i$.
 
@@ -314,29 +343,32 @@ legal solution of the original problem.
 
 The idea is simple `rounding`: that is, we think that $\geq 0.5$ is $1$(pick), and $<0.5$ is $0$.
 Next, we prove that this simple transformation idea can get a legal solution of the original problem.
-Consider every constraint $x_i+x_j\geq 1$. Then there must be at least one $x$ greater than or equal to $0.5$.
+Consider every constraint $x_i+x_j\geq 1$, there must be at least one $x$ greater than or equal to $0.5$.
 In rounding, we set it to 1. Then for each edge after rounding at least one end vertex of it is selected.
 Therefore, this transformation idea can get a legal solution of the original problem.
 
 Next we prove that this algorithm is a factor $2$ approximation to vertex cover.
-This is equivalent to proving that the vertex cover obtained by the algorithm is at most 2 times the optimal vertex cover.
-Suppose that $OPT_{frac}$ is the optimal solution of the fractional version, and $OPT_{vc}$ is the size of the optimal cover.
-First, we can get $OPT_{frac}\leq OPT_{vc}$. Because after relaxation, the result will be no worse than the optimal
- cover of integer version. Next, our solution is at most $2\times OPT_{frac}$. because
-our approach is no worse than doubling and rounding down. Therefore, our solution costs at most $2\times OPT_{vc}$.
+This is equivalent to proving that the vertex cover obtained by the algorithm is at most $2$ times the optimal vertex cover.
+Suppose that $OPT_{frac}$ is the optimal solution of the fractional version, and $OPT_{VC}$ is the size of the optimal cover.
+First, we can get $OPT_{frac}\leq OPT_{VC}$. Because after relaxation, the result will be no worse than the optimal
+ cover of integer version. Next, our solution is at most $2\times OPT_{frac}$. Since
+our approach is no worse than doubling and rounding down. Therefore, our solution costs at most $2\times OPT_{VC}$.
 
 The following briefly explains the LPP process.
 We write the question:
-$$min x_1+x_2+...+x_n$$
-s.t
+$$\min{x_1+x_2+...+x_n}$$
+$$s.t$$
 $$x_v + x_u \geq 1$$for every edge(v,u)
-Converted to standard type:
-$$max (-1)*x_1+(-1)*x_2+...+(-1)*x_n$$
+
+Converted to standard form:
+$$\max{(-1)*x_1+(-1)*x_2+...+(-1)*x_n}$$
 s.t
 $$(-1)*x_v + (-1)*x_u \leq -1$$ for every edge(v,u)
+
 Get the relaxed form:
-$$max (-1)*x_1+(-1)*x_2+...+(-1)*x_n$$
-s.t
+$$\max (-1)*x_1+(-1)*x_2+...+(-1)*x_n+0*x_{n+1}+...+0*x_{n+m}$$
+$$s.t$$
 $$(-1)*x_v + (-1)*x_u + x_{n+i}= -1$$ for every edge(v,u)
 i in range(1,m)
+
 Then you can get the coefficient matrix and run it with the simplex algorithm.
