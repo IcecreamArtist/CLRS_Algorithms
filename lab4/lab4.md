@@ -255,7 +255,10 @@ int main() {
         int res = 0;
         vector<int> ress;
         // rounding approach: 最简单的四舍五入
-        for (int i = 1; i <= n; ++i) if (round(ans[i]) == 1) res++, ress.push_back(i);
+        for (int i = 1; i <= n; ++i) if (round(ans[i]) == 1) {
+            res++; 
+            ress.push_back(i);
+        }
         printf("%d\n", res);
         for (auto i:ress) printf("%d ", i - 1);
     }
