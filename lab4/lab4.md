@@ -362,13 +362,13 @@ $$x_v + x_u \geq 1$$for every edge(v,u)
 
 Converted to standard form:
 $$\max{(-1)*x_1+(-1)*x_2+...+(-1)*x_n}$$
-s.t
+$$s.t$$
 $$(-1)*x_v + (-1)*x_u \leq -1$$ for every edge(v,u)
 
 Get the relaxed form:
-$$\max (-1)*x_1+(-1)*x_2+...+(-1)*x_n+0*x_{n+1}+...+0*x_{n+m}$$
+$$\max (-1)\times x_1+(-1)\times x_2+...+(-1)\times x_n+0\times x_{n+1}+...+0\times x_{n+m}$$
 $$s.t$$
-$$(-1)*x_v + (-1)*x_u + x_{n+i}= -1$$ for every edge(v,u)
+$$(-1)\times x_v + (-1)\times x_u + x_{n+i}= -1$$ for every edge(v,u)
 i in range(1,m)
 
 Then you can get the coefficient matrix and run it with the simplex algorithm.
