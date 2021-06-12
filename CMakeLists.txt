@@ -3,4 +3,4 @@ project(CLRS_Algorithms)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(CLRS_Algorithms lab3/stonegame2.cpp)
+add_executable(CLRS_Algorithms lab4/vertexcover2.cpp)
