@@ -108,7 +108,7 @@ So every time it finds the position that can jump to the farthest position among
 Time complexity: $O(n^2)$. Since we need to find the optimal position among reachable positions.
 
 
-# Problem 3-2 Russian-doll envelope problem
+# Problem 4-2 Vertex Cover
 
 ## Code
 solution 1 (greedy)
@@ -181,6 +181,7 @@ const double eps = 1e-8; // 控制精度
 double a[N][N], ans[N]; // 储存simplex矩阵, 储存答案
 int B[N << 1], n, m; // 储存轴位置
 
+// 以下为simplex算法
 void Pivot(int l, int e) {
     swap(B[n + l], B[e]); // 交换基本变量(n+l)与非基本变量(e)
     double t = a[l][e];
